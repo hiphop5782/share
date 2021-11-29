@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flex card layout</title>
+    <style>
+        /* reset style */
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            margin:0;
+            padding:0;
+        }
+
+        /* card layout */
+        .card-wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            
+            font-size: 20px;
+            width:30em;
+            margin:auto;
+        }
+        .card-wrapper > .card {
+            width:2em;
+            height:15em;
+            overflow: hidden;
+            padding:0.2em;
+
+            transition:width 0.4s ease-in-out;
+
+            cursor:pointer;
+        }
+        .card-wrapper > .card.active {
+            width:100%;
+        }
+
+        /* image style */
+        .card-wrapper > .card > img {
+            width:100%;
+            height:100%;
+            border-radius: 1em;
+            opacity:0.5;
+
+            transition: opacity 0.4s ease-in-out;
+        }
+        .card-wrapper > .card.active > img {
+            opacity:1;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        $(function(){
+            //card click event
+            $(".card-wrapper > .card").click(function(){
+                $(".card-wrapper > .card").removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="card-wrapper">
+        <div class="card active"><img src="https://picsum.photos/seed/1/300"></div>
+        <div class="card"><img src="https://picsum.photos/seed/2/300"></div>
+        <div class="card"><img src="https://picsum.photos/seed/3/300"></div>
+        <div class="card"><img src="https://picsum.photos/seed/4/300"></div>
+        <div class="card"><img src="https://picsum.photos/seed/5/300"></div>
+    </div>
+</body>
+</html>
