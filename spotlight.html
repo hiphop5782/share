@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotlight Effect</title>
+    <style>
+        /*
+        * Prefixed by https://autoprefixer.github.io
+        * PostCSS: v8.3.6,
+        * Autoprefixer: v10.3.1
+        * Browsers: last 4 version
+        */
+
+        html, body {
+            margin:0;
+            padding:0;
+
+            width:100%;
+            height:100%;
+        }
+
+        body {
+            background-image: url("https://yt3.ggpht.com/gYg9DNdje9bDoKa80GsTv0hd073uDAB7M2z7aH4FoHmQAHC_LHb5TsUdT-AXxYejMAnIMncDjw=s600-c-k-c0x00ffffff-no-rj-rp-mo");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        .cursor {
+            font-size: 20px;
+
+            width:10em;
+            height:10em;
+            
+            background: rgb(0,0,0);
+            background: -o-radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 70%, rgba(0,0,0,1) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 70%, rgba(0,0,0,1) 100%);
+
+            border-radius: 50%;
+
+            position:fixed;
+        
+            -webkit-box-shadow: 
+                1em 1em 0 5000px black,
+                1em -1em 0 5000px black,
+                -1em 1em 0 5000px black,
+                -1em -1em 0 5000px black;
+        
+            box-shadow: 
+                1em 1em 0 5000px black,
+                1em -1em 0 5000px black,
+                -1em 1em 0 5000px black,
+                -1em -1em 0 5000px black;
+
+            cursor:none;
+        }
+
+        /* mouse가 화면 밖을 벗어난 경우의 디자인 */
+        .cursor::after {
+            content:"";
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            background:black;
+            border-radius: 50%;
+            opacity: 0;
+
+            -webkit-transition:opacity 0.5s linear;
+            -o-transition:opacity 0.5s linear;
+            transition:opacity 0.5s linear;
+        }
+        .cursor.out::after {
+            opacity: 1;
+        }
+    </style>
+
+    <script>
+        window.addEventListener("load", function(){
+            var body = document.querySelector("body");
+            
+            body.addEventListener("mousemove", function(e){
+                e.preventDefault();
+
+                var cursor = document.querySelector(".cursor");
+                var width = parseInt(window.getComputedStyle(cursor).width);
+                var height = parseInt(window.getComputedStyle(cursor).height);
+                var top = e.y - height/2;
+                var left = e.x - width/2;
+                
+                cursor.style.top = top + "px";
+                cursor.style.left = left + "px";
+            });
+
+            body.addEventListener("mouseenter", function(e){
+                var cursor = document.querySelector(".cursor");
+                cursor.classList.remove("out");
+            });
+            body.addEventListener("mouseleave", function(e){
+                var cursor = document.querySelector(".cursor");
+                cursor.classList.add("out");
+            }); 
+        });
+    </script>
+</head>
+<body>
+    <div class="cursor out"></div>
+</body>
+</html>
