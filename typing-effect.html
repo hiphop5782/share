@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Effect</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+            box-sizing: border-box;
+        }
+        html, body {
+            margin:0;
+            padding:0;
+        }
+
+        .typing-wrapper {
+            display: inline-block;
+            
+            background-image: linear-gradient( 135deg, #97ABFF 10%, #123597 100%);
+
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+
+            position:relative;
+        }
+        /* cursor design */
+        .typing-wrapper::after {
+            content:"";
+            
+            position:absolute;
+            top:15%;
+            right:0;
+            bottom:15%;
+            width:0.15em;
+
+            margin-right: -0.25em;
+
+            background-image: linear-gradient( 135deg, #97ABFF 10%, #123597 100%);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        Welcome to 
+        <span class="typing-wrapper">{{displayText}}</span>
+    </div>
+
+    <!-- Vue 3 CDN-->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        //Vue 애플리케이션 생성하여 #app에 연결
+        Vue.createApp({
+            //data : 애플리케이션에서 사용할 백그라운드 데이터
+            data(){
+                return {
+                    text : "INCODING Tutorial",//표시할 텍스트
+                    index : 0,//표시할 우측 위치
+                    write : true,//true면 작성, false면 삭제
+                    delay : 250,//표시 간격
+                };
+            },
+            //computed : 애플리케이션 데이터를 기반으로 실시간 계산한 값
+            computed:{
+                displayText(){
+                    return this.text.substring(0, this.index);
+                },
+
+                //계산 값을 단순하게 처리하도록 추가 데이터 계산 처리
+                empty(){
+                    return this.index === 0;
+                },
+                full(){
+                    return this.index === this.text.length;
+                },
+                fullOrEmpty(){
+                    return this.full || this.empty;
+                },
+            },
+            //method : 애플리케이션에서 사용할 기능
+            methods:{
+                typing(){
+                    //작성중(write == true)일 경우 인덱스 증가 / 반대는 감소
+                    if(this.write){
+                        this.index ++;
+                    }
+                    else {
+                        this.index --;
+                    }
+
+                    //내용을 다 표시하면 방향을 반대로 변환
+                    if(this.full) {
+                        this.write = false;
+                    }
+                    else if(this.empty) {
+                        this.write = true;
+                    }
+
+                    //딜레이 계산 : 다 지워진 경우와 모두 표시된 경우 딜레이 1000ms , 아닌 경우 250ms로 처리
+                    if(this.fullOrEmpty){
+                        this.delay = 1000;
+                    }
+                    else{
+                        this.delay = 250;
+                    }
+
+                    //계속 같은 작업을 실행하도록 setTimeout 처리
+                    setTimeout(this.typing, this.delay);
+                },
+            },
+            //mounted : 애플리케이션 마운트(화면부착) 후 발생할 작업 코드
+            mounted(){
+                this.typing();
+            },
+        }).mount("#app");
+    </script>
+</body>
+</html>
