@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>clock</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .clock-wrapper {
+            font-size: 25px;
+        }
+
+        .clock-wrapper > .clock-outer {
+            width:20em;
+            height:20em;
+            
+            position: relative;
+
+            background-color:rgba(248,4,2,255);
+
+            border-radius: 1em;
+
+            margin:auto;
+        }
+        .clock-wrapper > .clock-outer > .clock-middle {
+            position:absolute;
+            top:3%;
+            left:3%;
+            right:3%;
+            bottom:3%;
+
+            background-color: rgba(233,95,64,255);
+        }
+        .clock-wrapper > .clock-outer > .clock-middle > .clock-inner {
+            position:absolute;
+            top:3%;
+            left:3%;
+            right:3%;
+            bottom:3%;
+
+            background-color: white;
+        }
+        
+        .clock-wrapper .numbers > .number {
+            position: absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+
+            font-size: 1.75em;
+        }
+        .clock-wrapper .numbers > .number:nth-child(1){
+            transform: rotate(30deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(2){
+            transform: rotate(60deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(3){
+            transform: rotate(90deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(4){
+            transform: rotate(120deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(5){
+            transform:rotate(150deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(6){
+            transform: rotate(180deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(7){
+            transform: rotate(210deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(8){
+            transform: rotate(240deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(9){
+            transform: rotate(270deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(10){
+            transform: rotate(300deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(11){
+            transform: rotate(330deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(12){
+            transform: 360deg;/*안해도 동일*/
+        }
+
+        .clock-wrapper .numbers > .number:nth-child(1) > span {
+            transform: rotate(-30deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(2) > span {
+            transform: rotate(-60deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(3) > span {
+            transform: rotate(-90deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(4) > span {
+            transform: rotate(-120deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(5) > span {
+            transform: rotate(-150deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(6) > span {
+            transform: rotate(-180deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(7) > span {
+            transform: rotate(-210deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(8) > span {
+            transform: rotate(-240deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(9) > span {
+            transform: rotate(-270deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(10) > span {
+            transform: rotate(-300deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(11) > span {
+            transform: rotate(-330deg);
+        }
+        .clock-wrapper .numbers > .number:nth-child(12) > span {
+            transform: rotate(-360deg);
+        }
+
+        .clock-wrapper .hand > .hour{
+            background-color: black;
+
+            position: absolute;
+            width:0.25em;
+            height:30%;
+
+            top:50%;
+            left:50%;
+
+            /* transform: translate(-50%, -65%) rotate(250deg); */
+            transform-origin: 50% 65%;
+        }
+        .clock-wrapper .hand > .hour::after {
+            content:"";
+            position:absolute;
+            background-color: black;
+
+            width:1em;
+            height:1em;
+            border-radius: 50%;
+
+            top:65%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .clock-wrapper .hand > .minute{
+            background-color: black;
+
+            position: absolute;
+            width:0.25em;
+            height:40%;
+
+            top:50%;
+            left:50%;
+
+            /* transform: translate(-50%, -85%) rotate(30deg); */
+            transform-origin: 50% 85%;
+        }
+        .clock-wrapper .hand > .minute::after {
+            content:"";
+            position:absolute;
+            background-color: black;
+
+            width:1em;
+            height:1em;
+            border-radius: 50%;
+
+            top:85%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .clock-wrapper .hand > .second{
+            background-color: red;
+
+            position: absolute;
+            width:0.2em;
+            height:48%;
+
+            top:50%;
+            left:50%;
+
+            /* transform: translate(-50%, -75%) rotate(180deg); */
+            transform-origin: 50% 75%;
+        }
+        .clock-wrapper .hand > .second::after {
+            content:"";
+            position:absolute;
+            background-color: red;
+
+            width:0.65em;
+            height:0.65em;
+            border-radius: 50%;
+
+            top:75%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-wrapper">
+
+        <!-- 시계 테두리 -->
+        <div class="clock-outer">
+            <div class="clock-middle">
+                <div class="clock-inner">
+                    
+                    <div class="numbers">
+                        <div class="number"><span>1</span></div>
+                        <div class="number"><span>2</span></div>
+                        <div class="number"><span>3</span></div>
+                        <div class="number"><span>4</span></div>
+                        <div class="number"><span>5</span></div>
+                        <div class="number"><span>6</span></div>
+                        <div class="number"><span>7</span></div>
+                        <div class="number"><span>8</span></div>
+                        <div class="number"><span>9</span></div>
+                        <div class="number"><span>10</span></div>
+                        <div class="number"><span>11</span></div>
+                        <div class="number"><span>12</span></div>
+                    </div>
+
+                    <div class="hand">
+                        <div class="hour" :style="hourStyle"></div>
+                        <div class="minute" :style="minuteStyle"></div>
+                        <div class="second" :style="secondStyle"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        Vue.createApp({
+            //프로그램에서 사용할 데이터
+            data(){
+                return {
+                    hour:moment().hour(),
+                    minute:moment().minute(),
+                    second:moment().second()
+                };
+            },
+            //data의 변화에 따라 실시간으로 시침,분침,초침의 스타일을 계산
+            computed:{
+                hourStyle(){
+                    const angle = this.totalSecond * this.hourSegment;
+                    return {
+                        "transform":"translate(-50%, -65%) rotate("+angle+"deg)"
+                    };
+                },
+                minuteStyle(){
+                    const angle = this.totalSecond * this.minuteSegment;
+                    return {
+                        "transform":"translate(-50%, -85%) rotate("+angle+"deg)"
+                    };
+                },
+                secondStyle(){
+                    const angle = this.totalSecond * this.secondSegment;
+                    return {
+                        "transform":"translate(-50%, -75%) rotate("+angle+"deg)"
+                    }
+                },
+
+                //hour, minute, second의 1초당 변화각을 계산
+                totalSecond(){
+                    return this.hour * 3600 + this.minute * 60 + this.second;
+                },
+                hourSegment(){
+                    //1시간은 3600초. 1시간당 시침은 30도씩 이동
+                    return 30 / 3600;
+                },
+                minuteSegment(){
+                    //1분은 60초. 1시간당 분침은 360도씩 이동
+                    return 360 / 3600;
+                },
+                secondSegment(){
+                    //1시간당 초침은 60바퀴(360 * 60) 만큼 이동
+                    return 360 * 60 / 3600;
+                },
+            },
+
+            //시작하면 1초마다 시간을 설정(momentJS 사용)
+            created(){
+                setInterval(()=>{
+                    this.hour = moment().hour();
+                    this.minute = moment().minute();
+                    this.second = moment().second();
+                }, 1000);
+            },
+        }).mount(".clock-wrapper");
+    </script>
+</body>
+</html>
