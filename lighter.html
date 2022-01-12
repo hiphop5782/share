@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lighter</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .lighter > .fire {
+            position: relative;
+
+            width: 3em;
+            height: 10em;
+
+            /* border: 1px solid black; */
+        }
+        .lighter > .fire::before {
+            content:"";
+
+            position: absolute;
+            top:2em;
+            left:0.5em;
+            right:0.5em;
+            bottom:0;
+
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-bottom-left-radius: 20%;
+            border-bottom-right-radius: 20%;
+            
+            /* background:orangered; */
+            border:1px solid 	#ff5a00;
+
+            box-shadow: 
+                0 -0.5em 0.5em 0.25em 	#ff5a00,
+                0 -0.25em 0.25em 0.25em #ff5a00,
+                inset 0 2em 0.5em 0.25em #ff5a00,
+                inset 0 3em 0.5em 0.25em #ffce00,
+                inset 0 6.5em 0.5em 0.25em lightgoldenrodyellow,
+                inset 0 9em 0.5em 0.25em darkslateblue
+            ;
+
+            filter: blur(0.1em);
+            -webkit-filter: blur(0.1em);
+
+            animation: burn 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes burn {
+            0% { transform:skew(-1deg);}
+            20% { top:1.8em }
+            40% { transform:skew(1deg);}
+            60% { top:2.1em }
+            80% {transform: skew(0deg);}
+            100% { top:1.9em }
+        }
+
+        .lighter {
+            position: relative;
+
+            font-size: 10px;
+        }
+        .lighter > .body {
+            position: relative;
+            width: 10em;
+            height: 30em;
+
+            background-image: url("./image/lighter.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .lighter > .body > .switch {
+            position: absolute;
+            top:2.3em;
+            right: 0.7em;
+
+            width: 2em;
+            height: 1em;
+
+            background: transparent;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="lighter">
+        <div class="fire" :style="styleObject"></div>
+        <div class="body">
+            <button class="switch" @mousedown="turnOn" @mouseup="turnOff" @mouseleave="turnOff"></button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return {
+                    on:false,
+                };
+            },
+            computed:{
+                styleObject(){
+                    const visibility = this.on? "visible" : "hidden";
+                    return {
+                        visibility : visibility
+                    }
+                },
+            },
+            methods:{
+                turnOn(){
+                    this.on = true;
+                },
+                turnOff(){
+                    this.on = false;
+                },
+            },
+        }).mount(".lighter");
+    </script>
+</body>
+</html>
