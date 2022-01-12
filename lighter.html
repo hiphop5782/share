@@ -92,10 +92,13 @@
     </style>
 </head>
 <body>
-    <div class="lighter">
-        <div class="fire" :style="styleObject"></div>
-        <div class="body">
-            <button class="switch" @mousedown="turnOn" @mouseup="turnOff" @mouseleave="turnOff" @touchstart="turnOn" @touchend="turnOff"></button>
+    <div id="app">
+        크기 : <input type="range" min="5" max="20" v-model="size">
+        <div class="lighter" :style="lighterStyleObject">
+            <div class="fire" :style="fireStyleObject"></div>
+            <div class="body">
+                <button class="switch" @mousedown="turnOn" @mouseup="turnOff" @mouseleave="turnOff" @touchstart="turnOn" @touchend="turnOff"></button>
+            </div>
         </div>
     </div>
 
@@ -104,11 +107,17 @@
         Vue.createApp({
             data(){
                 return {
+                    size:15,
                     on:false,
                 };
             },
             computed:{
-                styleObject(){
+                lighterStyleObject(){
+                    return {
+                        "font-size":this.size+"px"
+                    };
+                },
+                fireStyleObject(){
                     const visibility = this.on? "visible" : "hidden";
                     return {
                         visibility : visibility
@@ -123,7 +132,7 @@
                     this.on = false;
                 },
             },
-        }).mount(".lighter");
+        }).mount("#app");
     </script>
 </body>
 </html>
