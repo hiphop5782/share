@@ -90,7 +90,7 @@
     <div class="lighter">
         <div class="fire" :style="styleObject"></div>
         <div class="body">
-            <button class="switch" @mousedown="turnOn" @mouseup="turnOff" @mouseleave="turnOff"></button>
+            <button class="switch" @mousedown="turnOn" @mouseup="turnOff" @mouseleave="turnOff" @touchstart="turnOn" @touchend="turnOff"></button>
         </div>
     </div>
 
