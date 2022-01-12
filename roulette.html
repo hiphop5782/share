@@ -150,7 +150,8 @@
             
             <div v-for="(item, index) in items" :key="index">
                 <input type="text" v-model="item.value" class="item-input" @input="item.value = $event.target.value">
-                <button @click="deleteItem(index);" class="item-input-delete">삭제</button>
+                <button @click="deleteItem(index);" class="item-input-delete" v-if="index >= 2">삭제</button>
+                <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </div>
         <hr>
 
