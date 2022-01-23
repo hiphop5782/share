@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallary example</title>
+
+    <!-- google font cdn -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!-- bootstrap cdn -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif !important;
+            box-sizing: border-box;
+        }
+
+        .image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-wrapper>.overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.35);
+
+            transform: translateY(100%);
+            transition: transform 0.2s ease-in;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-wrapper:hover>.overlay {
+            transform: translateY(0%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- bootstrap 5를 이용한 화면 배치 구현 -->
+    <div class="container-fluid" id="gallary-app">
+
+        <!-- jumbotron -->
+        <div class="mt-4 p-5 text-center bg-light">
+            <h1>Gallary example</h1>
+            <p class="mt-4">
+                열혈강사 채널 좋아요 & 구독 부탁드려요!
+            </p>
+        </div>
+
+        <!--
+            이미지 배치 : 최대 4줄부터 화면 크기에 따라 1줄까지 축소
+            - bootstrap의 lg, md, sm 사용
+            - bootstrap은 한 줄을 12칸으로 보기 때문에 숫자 총 합이 12가 되도록 구성!
+        -->
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6" v-for="(sub, index) in list" :key="index">
+                <div class="image-wrapper rounded mb-3" v-for="(image, index2) in sub" :key="index2">
+                    <img class="w-100" :src="image.download_url">
+                    <div class="overlay text-light">
+                        <h5>Author</h5>
+                        <p v-text="image.author"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary w-100" v-on:click="loadImage">더보기</button>
+            </div>
+        </div>
+        -->
+    </div>
+
+   
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return {
+                    page:1,
+                    size:40,
+                    list:[
+                        [/*1열*/], [/*2열*/], [/*3열*/], [/*4열*/]
+                    ],
+                    loading:false,/*한 번에 여러번 요청하는것을 방지하기 위한 값 */
+                };
+            },
+            watch:{
+                loading:function(value){
+                    if(value){//loading == true : 스크롤 잠금
+                        this.disableScrolling();
+                    }
+                    else{//loading == false : 스크롤 잠금 해제
+                        this.enableScrolling();
+                    }
+                }
+            },
+            methods:{
+                async loadImage(){
+                    if(this.loading) return;
+
+                    this.loading = true;
+
+                    const response = await axios.get("https://picsum.photos/v2/list?page="+(this.page++)+"&limit="+this.size);
+                    
+                    //list의 각 열에 1/4씩 분할하여 추가(spread 연산자 활용)
+                    const partSize = parseInt(this.size / 4);
+                    this.list[0].push(...response.data.slice(partSize * 0, partSize * 1));
+                    this.list[1].push(...response.data.slice(partSize * 1, partSize * 2));
+                    this.list[2].push(...response.data.slice(partSize * 2, partSize * 3));
+                    this.list[3].push(...response.data.slice(partSize * 3));
+
+                    this.loading = false;
+                },
+                scrollHandler(){
+                    const H = document.documentElement;
+                    const B = document.body;
+                    const ST = "scrollTop";
+                    const SH = "scrollHeight";
+
+                    const percent = (H[ST] || B[ST]) / ( (H[SH] || B[SH]) - H.clientHeight) * 100;
+                    //console.log(percent);
+                    if(percent > 80) {
+                        this.loadImage();
+                    }
+                },
+                preventDefault(e){
+                    e.preventDefault();
+                },
+                preventDefaultKey(e){
+                    const keys = [37, 38, 39, 40];//[left, up, right, down]
+                    if(e.keyCode in keys){
+                        e.preventDefault();
+                        return false;
+                    }
+                },
+                disableScrolling(){
+                    //브라우저 버전마다 스크롤을 막기 위한 방법이 다르다.
+                    window.addEventListener("DOMMouseScroll", this.preventDefault, false);//FireFox 구버전
+                    window.addEventListener("touchmove", this.preventDefault, {passive:false});//모바일
+                    window.addEventListener("wheel", this.preventDefault, {passive:false});//현대 브라우저
+                    window.addEventListener("keydown", this.preventDefaultKey, false);//키보드 스크롤
+                },
+                enableScrolling(){
+                    window.removeEventListener("DOMMouseScroll", this.preventDefault, false);
+                    window.removeEventListener("touchmove", this.preventDefault, {passive:false});
+                    window.removeEventListener("wheel", this.preventDefault, {passive:false});
+                    window.removeEventListener("keydown", this.preventDefaultKey, false);
+                },
+            },
+            created(){
+                this.loadImage();
+
+                //scroll event
+                window.addEventListener("scroll", this.scrollHandler);
+            },
+        }).mount("#gallary-app");
+    </script>
+
+</body>
+
+</html>
