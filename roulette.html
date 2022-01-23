@@ -93,6 +93,30 @@
         .roulette-outer > .roulette {
             transition:transform 5s ease-in-out;
         }
+
+        .item-input, .item-input-add, .item-input-delete {
+            font-size: 20px;
+            padding: 0.5em;
+            outline: none;
+            border: 1px solid black;
+            background: white;
+        }
+        .item-input-add{
+            color: blue;
+            border-color: blue;
+        }
+        .item-input-add:hover {
+            color: white;
+            background: blue;
+        }
+        .item-input-delete {
+            color: red;
+            border-color: red;
+        }
+        .item-input-delete:hover {
+            color: white;
+            background: red;
+        }
     </style>
 </head>
 <body>
@@ -117,6 +141,19 @@
 
             </div>
         </div>
+
+        <hr>
+            <h2>
+                항목 수정하기
+                <button @click="addItem" class="item-input-add">추가</button>
+            </h2>
+            
+            <div v-for="(item, index) in items" :key="index">
+                <input type="text" v-model="item.value" class="item-input" @input="item.value = $event.target.value">
+                <button @click="deleteItem(index);" class="item-input-delete" v-if="index >= 2">삭제</button>
+                <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+        <hr>
 
         <button class="play-btn" v-on:click="play" v-bind:disabled="buttonDisabled">Play!</button>
         <hr>
@@ -178,18 +215,39 @@
                         this.buttonDisabled = false;
                     }, 5000);
                 },
+                addItem(){
+                    this.items.push({value:""});
+                },
+                deleteItem(index){
+                    this.items.splice(index,1);
+                },
+                refreshStyle(){
+                    const itemStyles = [];
+                    const lineStyles = [];
+                    this.items.forEach((el, idx)=>{
+                        //itemStyles 정의
+                        itemStyles.push({
+                            "transform":"rotate(" + (this.segment * idx) +"deg)",
+                        });
+                        //lineStyles 정의
+                        lineStyles.push({
+                            "transform":"rotate("+ (this.segment * idx + this.offset) +"deg)",
+                        });
+                    });
+                    this.itemStyles = itemStyles;
+                    this.lineStyles = lineStyles;
+                },
+            },
+            watch:{
+                items:{
+                    deep:true,
+                    handler(){
+                        this.refreshStyle();
+                    },
+                },
             },
             created(){
-                this.items.forEach((el, idx)=>{
-                    //itemStyles 정의
-                    this.itemStyles.push({
-                        "transform":"rotate(" + (this.segment * idx) +"deg)",
-                    });
-                    //lineStyles 정의
-                    this.lineStyles.push({
-                        "transform":"rotate("+ (this.segment * idx + this.offset) +"deg)",
-                    });
-                });
+                this.refreshStyle();
             },
         }).mount("#app");
     </script>
