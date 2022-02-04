@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reading indicator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        html, body {
+            margin:0;
+            padding:0;
+        }    
+
+        .container {
+            padding: 20px;
+        }
+
+        .indicator {
+            position: fixed;
+            top:0;
+            left:0;
+            right:0;
+            height:5px;
+        }
+        .indicator > .gauge {
+            width:0%;
+            height:100%;
+            background: rgb(131,58,180);
+            background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(window).scroll(function(){
+            const scrollPosition = $(document).scrollTop();
+            const documentHeight = $(document).height();
+            const windowHeight = $(window).height();
+            const availableHeight = documentHeight - windowHeight;
+
+            const percent = scrollPosition / availableHeight * 100;
+            $(".indicator").find(".gauge").css("width", percent+"%");
+        });
+    </script>
+</head>
+<body>
+    <div class="indicator">
+        <div class="gauge"></div>
+    </div>
+
+    <div class="container">
+        <h1>Lorem Ipsum</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porttitor malesuada arcu, ac porta odio porta vel. Aenean interdum, lorem eget mollis facilisis, nibh est venenatis mi, ut lacinia augue odio id ligula. Donec venenatis, magna nec luctus dictum, massa justo porttitor nibh, eu finibus ipsum orci non eros. Phasellus eget mi ligula. Praesent viverra quis dolor vitae fringilla. Quisque sed posuere tellus. Sed ultrices, orci vel euismod aliquet, justo mi consequat turpis, eget tristique nulla urna eget turpis. In tellus risus, vehicula ac risus tempor, elementum bibendum nunc. Nullam efficitur lectus a mi eleifend pretium. Morbi mattis lacus sit amet dignissim elementum. Fusce bibendum nisl eu nisi pretium, sit amet viverra velit dignissim. Fusce vehicula tortor risus, vel sollicitudin magna tincidunt eu. Donec maximus sagittis blandit. Sed sed accumsan ex, id interdum mi. Etiam aliquet a mi et feugiat. Praesent ultricies tellus nec mollis ultricies.</p>
+        <p>Aenean posuere massa mauris, non dignissim lacus tincidunt sed. Duis consequat tortor ut tincidunt sodales. Nullam nec dui auctor, aliquam nulla id, vestibulum quam. Sed vitae nisl diam. Vestibulum vitae risus in dui tristique accumsan. Duis in augue vel enim tincidunt luctus sit amet nec risus. Etiam sit amet euismod mi. Quisque varius convallis tellus, ac feugiat orci hendrerit sit amet. Pellentesque porttitor ultricies varius. Ut varius in magna eu suscipit.</p>
+        <p>Aliquam luctus nisl mauris, blandit ornare tortor feugiat et. Donec in massa cursus, volutpat odio nec, auctor augue. Nullam in augue nec dui dignissim tincidunt a vel justo. Morbi lobortis, arcu id consectetur iaculis, ipsum turpis elementum est, sit amet feugiat tellus nibh non enim. Aenean ultricies feugiat massa, at dignissim sem cursus sit amet. Vestibulum vel mi volutpat, dictum neque id, molestie ante. Morbi fermentum justo at vestibulum sollicitudin. Morbi mattis felis vel dictum blandit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque justo tortor, congue ut tellus non, cursus malesuada mauris. Morbi quis fringilla ante.</p>
+        <p>Nulla facilisi. Nam viverra, quam at tincidunt vehicula, enim arcu ornare tellus, sit amet convallis dolor lorem et nisi. Maecenas dui augue, efficitur sit amet leo eget, suscipit porttitor ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum finibus aliquet erat ac venenatis. Quisque lectus libero, interdum cursus metus vel, pellentesque posuere arcu. Sed volutpat risus sit amet dui blandit ullamcorper. Aliquam condimentum quis justo in tempus. Nunc malesuada bibendum dapibus. Maecenas viverra ante condimentum metus laoreet, aliquet condimentum metus dapibus. Vestibulum bibendum augue eget ex volutpat sodales.</p>
+        <p>Proin a mauris a mi efficitur hendrerit at vitae risus. Ut eu cursus erat, eget auctor libero. Aenean pulvinar velit nec ligula maximus molestie. Proin dui sapien, laoreet non consectetur eget, pellentesque at leo. Morbi ornare tellus vel arcu dictum accumsan. Donec lectus tortor, convallis non consectetur at, semper at leo. In sit amet placerat massa. Integer porttitor in ipsum eget sollicitudin. Fusce molestie turpis nec dui vulputate convallis.</p>
+        <p>Sed ut sollicitudin mi. Morbi a interdum ipsum. Donec aliquet lorem mattis mauris tristique, non mattis velit scelerisque. Praesent ac enim consectetur nisi mattis auctor eu nec mauris. Curabitur mollis, erat dapibus volutpat dignissim, nibh justo congue ipsum, vitae efficitur odio lectus a dolor. Praesent pharetra augue pretium cursus consequat. Pellentesque dictum, nulla vel faucibus tristique, mauris massa porta quam, at tincidunt est purus et quam.</p>
+        <p>Nulla facilisi. Duis dictum interdum pulvinar. Cras vel lacus aliquam orci suscipit vulputate et sed turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque at leo aliquet, pellentesque ante eu, vulputate neque. Nunc ac dui felis. Etiam venenatis velit lacinia, vulputate lacus luctus, vehicula orci. Etiam interdum condimentum ante eu venenatis. Aliquam a nunc sodales, vulputate sem nec, rutrum elit. Aenean a sagittis ante, in dignissim velit. Donec vulputate purus id velit bibendum ornare sed et ipsum. Aenean volutpat, mauris et accumsan tempor, augue tortor efficitur tortor, nec fringilla purus turpis eu orci. Morbi faucibus ullamcorper enim quis cursus. Ut lacinia porta odio et tincidunt.</p>
+        <p>Phasellus scelerisque ipsum consequat, ornare tortor eu, vestibulum libero. Aenean scelerisque pulvinar convallis. Cras condimentum sed risus et iaculis. Pellentesque ante turpis, dapibus nec rutrum a, rhoncus ac ipsum. Morbi urna leo, lobortis dapibus egestas sit amet, sodales id libero. Aenean interdum ligula urna, nec volutpat tortor mollis vitae. Nullam pulvinar odio eu libero aliquet dictum.</p>
+        <p>Nulla facilisi. Nam condimentum accumsan nibh sed consequat. Nullam urna nibh, volutpat a diam eu, sodales mattis lorem. Integer rhoncus nulla at consequat rutrum. Nullam eros ipsum, pretium a nunc quis, luctus suscipit tellus. Ut at tempor nibh. Morbi id accumsan nisi. Aliquam fermentum mauris sit amet lorem auctor, venenatis sagittis enim tincidunt.</p>
+        <p>Integer euismod, lacus lacinia aliquam egestas, dolor magna euismod velit, at dapibus turpis purus in quam. Integer quis tincidunt arcu. Morbi faucibus mauris nec risus laoreet, eu pretium mauris volutpat. In suscipit ut risus at blandit. Praesent fringilla imperdiet sollicitudin. Sed at justo velit. Quisque convallis urna eget ipsum eleifend tristique. Mauris vestibulum nibh eget accumsan facilisis.</p>
+        <p>Nunc rutrum, quam id dictum fermentum, mi magna scelerisque risus, a lacinia elit ipsum sed mi. Nam vitae nisl eros. Nulla viverra dignissim diam nec laoreet. Sed viverra hendrerit massa, in viverra urna ultrices a. Suspendisse faucibus nisl vel imperdiet posuere. Vivamus sit amet pharetra nibh. Nulla semper iaculis justo nec congue. Nunc et tristique purus. Vivamus ac laoreet risus. Suspendisse tincidunt aliquam enim, quis porttitor urna elementum sed. Nulla facilisi. Sed a tristique eros.</p>
+    </div>
+</body>
+</html>
