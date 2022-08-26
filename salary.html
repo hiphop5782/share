@@ -41,7 +41,7 @@
 
         <div class="row mt-3">
             <div class="offset-md-2 col-md-8">
-                <label>오늘 번 돈</label>
+                <label>오늘 번 돈(세전)</label>
                 <div class="money">{{incomeInteger}}</div>
             </div>
         </div>
@@ -55,8 +55,18 @@
 
         <div class="row mt-3">
             <div class="offset-md-2 col-md-8">
-                <label>시간당 급여(원)</label>
-                <input type="number" class="form-control rounded" v-model="payPerHour">
+                <div class="row">
+                    <div class="col-3">
+                        <select v-model="type" class="form-control">
+                            <option>시급</option>
+                            <option>월급</option>
+                            <option>연봉</option>
+                        </select>
+                    </div>
+                    <div class="col-9">
+                        <input type="number" class="form-control rounded" v-model="pay">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -97,7 +107,8 @@
         Vue.createApp({
             data(){
                 return {
-                    payPerHour:10000,
+                    type:"시급",
+                    pay:10000,
                     beginTime:"09:00",
                     beginTimeObject:moment("09:00", "HH:mm"),
                     endTime:"18:00",
@@ -110,7 +121,12 @@
             },
             computed:{
                 payPerSecond(){
-                    return this.payPerHour / 60 / 60;
+                    switch(this.type){
+                        case "시급": return this.pay / 60 / 60;
+                        case "월급": return this.pay / this.calculateWorkingDays() / this.period / 60;
+                        case "연봉": return this.pay / 12 / this.calculateWorkingDays() / this.period / 60;
+                    }
+                    return 0;
                 },
                 incomeInteger(){
                     return parseInt(this.income).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -118,6 +134,9 @@
                 utc(){
                     return moment.utc(this.remain * 1000).format("HH:mm:ss");
                 },
+                period(){
+                    return this.endTimeObject.diff(this.beginTimeObject, "minutes");
+                }
             },
             watch:{
                 beginTime(){
@@ -130,6 +149,20 @@
             methods:{
                 run(){
                     if(this.handle != null) return;
+                    
+                    const now = moment();
+                    if(now.isAfter(this.endTimeObject)){
+                        alert("근무가 종료되었습니다");
+                        this.calculate();
+                        return;
+                    }
+
+                    if(now.isBefore(this.beginTimeObject)){
+                        alert("근무 시작 전입니다");
+                        this.calculate();
+                        return;
+                    }
+
                     this.handle = setInterval(this.calculate, 1000);
                 },
                 stop(){
@@ -139,9 +172,20 @@
                 },
                 calculate(){
                     const now = moment();
-                    const work = now.diff(this.beginTimeObject, "seconds");
+                    const work = Math.min(now.diff(this.beginTimeObject, "seconds"), this.endTimeObject.diff(this.beginTimeObject, "seconds"));
                     this.income = this.payPerSecond * work;
-                    this.remain = Math.abs(now.diff(this.endTimeObject, "seconds"));
+                    this.remain = Math.max(this.endTimeObject.diff(now, "seconds"), 0);
+                },
+                calculateWorkingDays(){
+                    let date = moment();
+                    let days = date.daysInMonth();
+                    for(let i=0; i <= date.daysInMonth(); i++){
+                        date = date.add(1, 'days');
+                        if(date.isoWeekday() == 6 && date.isoWeekday() == 7){
+                            days--;
+                        }
+                    }
+                    return days;
                 },
             },
         }).mount("#app");
