@@ -21,11 +21,46 @@
             -webkit-text-fill-color: transparent;
             -webkit-background-clip: text;
 
-            font-size: 5em;
-            font-style: bolder;
+            font-size: 75px;
+            font-weight: bolder;
             font-family: 'Varela Round', sans-serif;
 
             text-align: right;
+
+            position: relative;
+            height:1.2em;
+        }
+        .rolling {
+            font-size: 75px;
+            position: relative;
+            max-height: 1.25em;
+            font-family: 'Varela Round', sans-serif;
+            font-weight: bold;
+            overflow: hidden;
+
+            text-align: right;
+        }
+        .rolling > .number {
+            position: relative;
+            display: inline-block;
+            transition: top 0.1s ease-in-out;
+            color: #123597;
+            top:0em;
+            vertical-align: top;
+        }
+        .rolling > .number.v-0 { top:0em; }
+        .rolling > .number.v-1 { top:-1.5em; }
+        .rolling > .number.v-2 { top:-3.0em; }
+        .rolling > .number.v-3 { top:-4.5em; }
+        .rolling > .number.v-4 { top:-6.0em; }
+        .rolling > .number.v-5 { top:-7.5em; }
+        .rolling > .number.v-6 { top:-9.0em; }
+        .rolling > .number.v-7 { top:-10.5em; }
+        .rolling > .number.v-8 { top:-12.0em; }
+        .rolling > .number.v-9 { top:-13.5em; }
+
+        .money > .number > .number-unit {
+            overflow: visible;
         }
     </style>
 </head>
@@ -39,10 +74,22 @@
             </div>
         </div>
 
-        <div class="row mt-3">
+        <!-- <div class="row mt-3">
             <div class="offset-md-2 col-md-8">
                 <label>오늘 번 돈(세전)</label>
                 <div class="money">{{incomeInteger}}</div>
+            </div>
+        </div> -->
+
+        <div class="row mt-3">
+            <div class="offset-md-2 col-md-8">
+                <label>오늘 번 돈(세전)</label>
+                <div class="rolling">
+                    <div class="number" v-for="(s, i) in incomeString" :key="i" :class="calculateClass(s)">
+                        <div class="number-unit" v-if="s != ','" v-for="(n,k) in 10" :key="k">{{n-1}}</div>
+                        <div class="number-unit" v-else>,</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -131,6 +178,10 @@
                 incomeInteger(){
                     return parseInt(this.income).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 },
+                incomeString(){
+                    //return parseInt(this.income).toString().split('');
+                    return this.incomeInteger.split('');
+                },
                 utc(){
                     return moment.utc(this.remain * 1000).format("HH:mm:ss");
                 },
@@ -187,6 +238,10 @@
                     }
                     return days;
                 },
+                calculateClass(s){
+                    if(s == ',') return '';
+                    return 'v-'+s;
+                }
             },
         }).mount("#app");
     </script>
