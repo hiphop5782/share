@@ -185,6 +185,7 @@
 
     <script src="https://unpkg.com/vue@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script>
         Vue.createApp({
             data(){
@@ -227,9 +228,17 @@
             watch:{
                 beginTime(){
                     this.beginTimeObject = moment(this.beginTime, "HH:mm");
+                    localStorage.setItem("beginTime", this.beginTime);
                 },
                 endTime(){
                     this.endTimeObject = moment(this.endTime, "HH:mm");
+                    localStorage.setItem("endTime", this.endTime);
+                },
+                pay(){
+                    localStorage.setItem("pay", this.pay);
+                },
+                type(){
+                    localStorage.setItem("type", this.type);
                 },
             },
             methods:{
@@ -277,6 +286,12 @@
                     if(s == ',') return '';
                     return 'v-'+s;
                 }
+            },
+            created(){
+                this.beginTime = localStorage.getItem("beginTime") || this.beginTime;
+                this.endTime = localStorage.getItem("endTime") || this.endTime;
+                this.pay = parseInt(localStorage.getItem("pay")) || this.pay;
+                this.type = localStorage.getItem("type") || this.type;
             },
         }).mount("#app");
     </script>
