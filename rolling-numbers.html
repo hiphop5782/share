@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolling numbers</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .rolling-numbers {
+            font-family: consolas;
+            font-size: 50px;
+            border: 1px solid black;
+            height: 1em;
+            line-height: 1em;
+            display: flex;
+            overflow: hidden;
+        }
+        .rolling-numbers.show {
+            overflow: visible;
+        }
+        .center {
+            position: fixed;
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .rolling-numbers > .number {
+            position: relative;
+            vertical-align: top;
+            transition: top 0.1s ease-out;
+        }
+        .rolling-numbers > .number[data-value="0"]{top:-0em;}
+        .rolling-numbers > .number[data-value="1"]{top:-1em;}
+        .rolling-numbers > .number[data-value="2"]{top:-2em;}
+        .rolling-numbers > .number[data-value="3"]{top:-3em;}
+        .rolling-numbers > .number[data-value="4"]{top:-4em;}
+        .rolling-numbers > .number[data-value="5"]{top:-5em;}
+        .rolling-numbers > .number[data-value="6"]{top:-6em;}
+        .rolling-numbers > .number[data-value="7"]{top:-7em;}
+        .rolling-numbers > .number[data-value="8"]{top:-8em;}
+        .rolling-numbers > .number[data-value="9"]{top:-9em;}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="rolling-numbers center" :class="{'show':show}">
+            <div class="number" v-for="n in numberStr" :data-value="n">
+                <div class="unit" v-for="k in 10">{{k-1}}</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return {
+                    number:15246,
+                    size:10,
+                    show:false,
+                };
+            },
+            computed:{
+                numberStr(){
+                    return String(this.number).padStart(this.size, '0');
+                },
+            },
+            mounted(){
+                setInterval(()=>{
+                    this.number++;
+                }, 250);
+            },
+        }).mount("#app");
+    </script>
+</body>
+</html>
