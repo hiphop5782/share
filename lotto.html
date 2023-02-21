@@ -18,9 +18,10 @@
         }
 
         .lotto-wrapper>.lotto-ball {
-            font-size: 30px;
+            font-size: 4.4vw;
             width: 3em;
             height: 3em;
+            margin-left: 0.05em;
 
             display: inline-flex;
             justify-content: center;
@@ -93,6 +94,8 @@
         .lotto-wrapper {
             overflow: hidden;
             white-space: nowrap;
+            padding-top: 20vw;
+            padding-left: 2vw;
         }
 
         .lotto-wrapper>.lotto-ball {
@@ -109,7 +112,43 @@
         }
 
         .lotto-wrapper>.lotto-ball.active>.number {
-            transform: rotate(-1440deg);
+            transform: rotate(-1080deg);
+        }
+
+        .generate-btn {
+            position: fixed;
+            display: block;
+            width:12vw;
+            height:12vw;
+            top:2vw;
+            right:2vw;
+            border-radius: 50%;
+            border: 2px solid #fae37d;
+            font-size: 3vw;
+            font-weight: bolder;
+            cursor: pointer;
+
+            background: rgb(255,255,255);
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(201,181,132,0) 25%, rgba(226,204,129,0.7511379551820728) 40%, rgba(250,227,125,1) 50%, rgba(226,204,129,0.75) 60%, rgba(255, 255, 255, 0) 75%, rgba(255,255,255,0) 100%);
+            background-size: 500%;
+            background-position: 0 0;
+
+            transition: background 0.5s ease-out;
+            
+            color:#fae37d;
+        }
+        .generate-btn:hover {
+            border-color: #fae37d;
+            color:#fae37d;
+
+            background-position: 100% 0;
+        }
+        .lotto-master {
+            width:12vw;
+            height:12vw;
+            position: fixed;
+            top:2vw;
+            left:2vw;
         }
     </style>
     <script>
@@ -171,7 +210,8 @@
         </div>
     </template>
 
-    <button class="generate-btn">Generate!</button>
+    <img class="lotto-master" src="./image/lotto.png">
+    <button class="generate-btn">번호<br>추첨</button>
 
     <div class="lotto-wrapper"></div>
 
